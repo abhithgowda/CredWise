@@ -47,8 +47,7 @@ Make sure you have the following software installed on your machine:
 
 1.  **Clone the Repository**
     ```sh
-    git clone [https://github.com/YOUR_USERNAME/CredWise.git](https://github.com/YOUR_USERNAME/CredWise.git)
-    cd CredWise
+    git clone https://github.com/abhithgowda/CredWise.git
     ```
     *(Replace `YOUR_USERNAME` with your GitHub username)*
 
@@ -63,77 +62,3 @@ Make sure you have the following software installed on your machine:
     * Run the application by pressing `F5` or clicking the "Start" button.
     * The application will launch in your default web browser, typically on a port like `http://localhost:5000`.
 
----
-
-## 📝 Database Schema
-
-The application relies on the following database structure.
-
-<details>
-<summary>Click to view SQL Table Definitions</summary>
-
-**1. Customer Table**
-```sql
-CREATE TABLE Customer (
-    customerId INT IDENTITY(1,1) PRIMARY KEY,
-    name NVARCHAR(100) NOT NULL,
-    email NVARCHAR(100) UNIQUE NOT NULL,
-    phone NVARCHAR(15),
-    address NVARCHAR(MAX),
-    kycStatus NVARCHAR(20) CHECK (kycStatus IN ('PENDING', 'VERIFIED'))
-);
-```
-
-**2. LoanProduct Table**
-```sql
-CREATE TABLE LoanProduct (
-    loanProductId INT IDENTITY(1,1) PRIMARY KEY,
-    productName NVARCHAR(50) NOT NULL,
-    interestRate DECIMAL(5, 2) NOT NULL,
-    minAmount DECIMAL(18, 2) NOT NULL,
-    maxAmount DECIMAL(18, 2) NOT NULL,
-    tenure INT NOT NULL
-);
-```
-
-**3. LoanApplication Table**
-```sql
-CREATE TABLE LoanApplication (
-    applicationId INT IDENTITY(1,1) PRIMARY KEY,
-    customerId INT,
-    loanProductId INT,
-    loanAmount DECIMAL(18, 2) NOT NULL,
-    applicationDate DATE NOT NULL,
-    approvalStatus NVARCHAR(20) CHECK (approvalStatus IN ('PENDING', 'APPROVED', 'REJECTED')),
-    FOREIGN KEY (customerId) REFERENCES Customer(customerId),
-    FOREIGN KEY (loanProductId) REFERENCES LoanProduct(loanProductId)
-);
-```
-
-**4. Repayment Table**
-```sql
-CREATE TABLE Repayment (
-    repaymentId INT IDENTITY(1,1) PRIMARY KEY,
-    applicationId INT,
-    dueDate DATE NOT NULL,
-    amountDue DECIMAL(18, 2) NOT NULL,
-    paymentDate DATE,
-    paymentStatus NVARCHAR(20) CHECK (paymentStatus IN ('PENDING', 'COMPLETED')),
-    FOREIGN KEY (applicationId) REFERENCES LoanApplication(applicationId)
-);
-```
-</details>
-
----
-
-## 📸 Screenshots
-
-> **Note:** This is a crucial section! Add screenshots of your actual running application to visually demonstrate your work. Good screenshots can make a huge difference.
-
-*(Example:)*
-
-**Customer Dashboard**
-![Customer Dashboard](https://placehold.co/600x400/FFFFFF/000000?text=Your+App+Screenshot+Here)
-
-**Admin Loan Approval Page**
-![Admin Loan Approval Page](https://placehold.co/600x400/FFFFFF/000000?text=Your+App+Screenshot+Here)
