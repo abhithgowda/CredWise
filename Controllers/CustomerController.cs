@@ -1,24 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using CredWise_Trail.Models;
-using CredWise_Trail.ViewModels;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using CredWise_Trail.Models;
 using CredWise_Trail.Models.ViewModels;
+using CredWise_Trail.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
 
 namespace CredWise_Trail.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly BankLoanManagementDbContext _context;
+        private readonly IWebHostEnvironment _hostingEnvironment; // Add this line
 
-        public CustomerController(BankLoanManagementDbContext context)
+
+        public CustomerController(BankLoanManagementDbContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment; // Add this line
+            _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult RequestSupport()
         {
@@ -618,7 +623,7 @@ namespace CredWise_Trail.Controllers
 
             {
 
-                string contentRootPath = Directory.GetCurrentDirectory();
+                string contentRootPath = _hostingEnvironment.ContentRootPath;
 
                 string uploadFolder = Path.Combine(contentRootPath, "kyc_documents");
 
@@ -746,8 +751,9 @@ namespace CredWise_Trail.Controllers
 
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("KYCUpload");
-
+                    // Temporarily change this to a different, known-working page
+                    return RedirectToAction("CustomerDashboard", "Customer");
+                    // Assuming you have a CustomerDashboard action in a CustomerController
                 }
 
                 catch (Exception ex)

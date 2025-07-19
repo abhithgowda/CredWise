@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http; // Required for IFormFile
 using System.ComponentModel.DataAnnotations;
 
-namespace CredWise_Trail.ViewModels
+namespace CredWise_Trail.ViewModels 
 {
     public class KycUploadViewModel
     {

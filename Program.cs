@@ -40,6 +40,27 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+// v-- ADD THIS MIDDLEWARE BLOCK --v
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next(context);
+    }
+    catch (Exception ex)
+    {
+        // Log the fatal exception to a file before the application dies
+        var logPath = Path.Combine(app.Environment.ContentRootPath, "fatal_crash_log.txt");
+        var errorDetails = $"[{DateTime.UtcNow}] CRASH DETAILS:\n{ex.ToString()}\n\n";
+
+        // Use non-async method to increase chance of success before shutdown
+        File.AppendAllText(logPath, errorDetails);
+
+        // Let the default error handling take over
+        throw;
+    }
+});
+// ^-- END OF MIDDLEWARE BLOCK --^
 
 app.UseAuthentication();
 app.UseAuthorization();

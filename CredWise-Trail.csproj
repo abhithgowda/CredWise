@@ -7,6 +7,9 @@
     <RootNamespace>CredWise_Trail</RootNamespace>
   </PropertyGroup>
 
+	<ItemGroup>
+		<Watch Remove="kyc_documents\**" />
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.5" />
